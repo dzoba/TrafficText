@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Url:</b>
+  <%= @alert.url %>
+</p>
+
+<p>
+  <b>Start:</b>
+  <%= @alert.start %>
+</p>
+
+<p>
+  <b>End:</b>
+  <%= @alert.end %>
+</p>
+
+<p>
+  <b>Active:</b>
+  <%= @alert.active %>
+</p>
+
+<p>
+  <b>User:</b>
+  <%= @alert.user %>
+</p>
+
+
+<%= link_to 'Edit', edit_alert_path(@alert) %> |
+<%= link_to 'Back', alerts_path %>
