@@ -1,109 +1,67 @@
 <% content_for :head do %>
-<script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0"></script>
-<script type="text/javascript">
-    var map = null;
-    var directionsManager;
-    var directionsErrorEventObj;
-    var directionsUpdatedEventObj;
-              
-    function getMap()
-    {
-      map = new Microsoft.Maps.Map(document.getElementById('mapDiv'), {credentials: 'Ah8etcX-YlaQzIeeC6bMXfPVLABzN2fiQaXiVCVuwAXpmkVvVHLtw791AMZtz71z'});
-    }
-
-    function ClickRoute(credentials)
-    {
-        if (!directionsManager)
-        {
-            Microsoft.Maps.loadModule('Microsoft.Maps.Directions', { callback: createDirections });
-        }
-    }
-
-    function createDirections() 
-    {
-        map.getCredentials(MakeRouteRequest);
-    }
-
-    function MakeRouteRequest(credentials)
-    {
-        var routeRequest = "http://dev.virtualearth.net/REST/v1/Routes?wp.0=" + document.getElementById('txtStart').value + "&wp.1=" + document.getElementById('txtEnd').value + "&routePathOutput=Points&output=json&jsonp=RouteCallback&key=" + credentials;
-
-       // document.getElementById("rawRoute").appendChild(routeRequest);      
-
-        CallRestService(routeRequest);
-    }
-
-    function CallRestService(request) 
-    {
-        var script = document.createElement("script");
-        script.setAttribute("type", "text/javascript");
-        script.setAttribute("src", request);
-        document.body.appendChild(script);
-    }
-
-    function createDirectionsManager()
-    {
-      var displayMessage;
-      if (!directionsManager) 
+      <script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0"></script>
+      <script type="text/javascript">
+      var map = null;
+      var directionsManager;
+      var directionsErrorEventObj;
+      var directionsUpdatedEventObj; 
+       
+      function getMap()
       {
-          directionsManager = new Microsoft.Maps.Directions.DirectionsManager(map);
-          displayMessage = 'Directions Module loaded\n';
-          displayMessage += 'Directions Manager loaded';
+          map = new Microsoft.Maps.Map(document.getElementById('myMap'), {credentials: 'Ah8etcX-YlaQzIeeC6bMXfPVLABzN2fiQaXiVCVuwAXpmkVvVHLtw791AMZtz71z', width: 650, height: 450, center: new Microsoft.Maps.Location(38.685509760012, -96.50390625), zoom: 4, mapTypeId: Microsoft.Maps.MapTypeId.road});
       }
       
-      directionsManager.resetDirections();
-      directionsErrorEventObj = Microsoft.Maps.Events.addHandler(directionsManager, 'directionsError', function(arg) { alert(arg.message) });
-      directionsUpdatedEventObj = Microsoft.Maps.Events.addHandler(directionsManager, 'directionsUpdated', function() { alert('Directions updated') });
-    }
+      function createDirectionsManager()
+      {
+          var displayMessage;
+          if (!directionsManager) 
+          {
+              directionsManager = new Microsoft.Maps.Directions.DirectionsManager(map);
+              displayMessage = 'Directions Module loaded\n';
+              displayMessage += 'Directions Manager loaded';
+          }
+          //alert(displayMessage);
+          directionsManager.resetDirections();
+          directionsErrorEventObj = Microsoft.Maps.Events.addHandler(directionsManager, 'directionsError', function(arg) { alert(arg.message) });
+          directionsUpdatedEventObj = Microsoft.Maps.Events.addHandler(directionsManager, 'directionsUpdated', function() { /*alert('Directions updated')*/ });
+      }
       
-    function addWaypoint()
-    {
-    if (!directionsManager) { createDirectionsManager(); }
-    if(directionsManager.getAllWaypoints().length < 2)
-    {
-      directionsManager.resetDirections();
-      var seattleWaypoint = new Microsoft.Maps.Directions.Waypoint({ address: 'Seattle, WA' });
-      directionsManager.addWaypoint(seattleWaypoint);
-      var tacomaWaypoint = new Microsoft.Maps.Directions.Waypoint({ address: 'Tacoma, WA', location: new Microsoft.Maps.Location(47.255134, -122.441650) });
-      directionsManager.addWaypoint(tacomaWaypoint);
-    }
-    // Insert a waypoint
-    directionsManager.addWaypoint(new Microsoft.Maps.Directions.Waypoint({ address: 'Issaquah, WA', location: new Microsoft.Maps.Location(47.530094, -122.033798) }), 1);
-    // Set the element in which the itinerary will be rendered
-    directionsManager.setRenderOptions({ itineraryContainer: document.getElementById('directionsItinerary') });
-    alert('Calculating directions...');
-    directionsManager.calculateDirections();
-    }
+      function createDrivingRoute()
+      {
+        if (!directionsManager) { createDirectionsManager(); }
+        directionsManager.resetDirections();
+        // Set Route Mode to driving 
+        directionsManager.setRequestOptions({ routeMode: Microsoft.Maps.Directions.RouteMode.driving });
+        var seattleWaypoint = new Microsoft.Maps.Directions.Waypoint({ address: document.getElementById('txtStart').value });
+        directionsManager.addWaypoint(seattleWaypoint);
+        var tacomaWaypoint = new Microsoft.Maps.Directions.Waypoint({ address: document.getElementById('txtEnd').value });
+        directionsManager.addWaypoint(tacomaWaypoint);
+        // Set the element in which the itinerary will be rendered
+        directionsManager.setRenderOptions({ itineraryContainer: document.getElementById('directionsItinerary') });
+        //alert('Calculating directions...');
+        directionsManager.calculateDirections();
+      }
 
-    function RouteCallback(result) {
-        if (result &&
-            result.resourceSets &&
-            result.resourceSets.length > 0 &&
-            result.resourceSets[0].resources &&
-            result.resourceSets[0].resources.length > 0) {
-
-            // Set the map view
-            var bbox = result.resourceSets[0].resources[0].bbox;
-            var viewBoundaries = Microsoft.Maps.LocationRect.fromLocations(new Microsoft.Maps.Location(bbox[0], bbox[1]), new Microsoft.Maps.Location(bbox[2], bbox[3]));
-            map.setView({ bounds: viewBoundaries});
-
-
-            // Draw the route
-            var routeline = result.resourceSets[0].resources[0].routePath.line;
-            var routepoints = new Array();
-             
-            for (var i = 0; i < routeline.coordinates.length; i++) {
-                routepoints[i]=new Microsoft.Maps.Location(routeline.coordinates[i][0], routeline.coordinates[i][1]);
-            }
-
-             
-            // Draw the route on the map
-            var routeshape = new Microsoft.Maps.Polyline(routepoints, {strokeColor:new Microsoft.Maps.Color(200,0,0,200)});
-            map.entities.push(routeshape);      
+      function createDirections() {
+        if (!directionsManager)
+        {
+          Microsoft.Maps.loadModule('Microsoft.Maps.Directions', { callback: createDrivingRoute });
         }
-    }
-</script>
+        else
+        {
+          createDrivingRoute();
+        }
+       }
 
+      function clearDisplay()
+      {
+        if (!directionsManager) { createDirectionsManager(); }
+        directionsManager.clearDisplay();
+        //alert('Directions cleared (map/itinerary cleared, Waypoints preserved, request and render options preserved)');
+      }
+
+
+      </script>
 
 <% end %>
 
@@ -114,12 +72,14 @@
 
 
 
-      <div onload="getMap();"  id='mapDiv' style="position:relative; width:400px; height:400px;"></div>
-      <input id="txtStart" type="text" value="Seattle"/>
+<div id='myMap' style="position:relative; width:650px; height:450px;"></div>
+      <div>
+         <input type="button" value="CreateDrivingRoute" onclick="createDirections();" />
+      </div>
+            <input id="txtStart" type="text" value="Seattle"/>
       <input id="txtEnd" type="text" value="Portland"/>
-      <input type="button" value="Calculate Route" onclick="ClickRoute()"/>
-      <div id='rawRoute'></div>
-
+      <div id='directionsItinerary'> </div> 
+       <input type="button" value="Clear Map" onclick="clearDisplay();" />
 
 
 
