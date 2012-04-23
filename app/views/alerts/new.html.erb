@@ -32,14 +32,26 @@
         directionsManager.resetDirections();
         // Set Route Mode to driving 
         directionsManager.setRequestOptions({ routeMode: Microsoft.Maps.Directions.RouteMode.driving });
-        var seattleWaypoint = new Microsoft.Maps.Directions.Waypoint({ address: document.getElementById('txtStart').value });
-        directionsManager.addWaypoint(seattleWaypoint);
-        var tacomaWaypoint = new Microsoft.Maps.Directions.Waypoint({ address: document.getElementById('txtEnd').value });
-        directionsManager.addWaypoint(tacomaWaypoint);
+        var startWaypoint = new Microsoft.Maps.Directions.Waypoint({ address: document.getElementById('txtStart').value });
+        directionsManager.addWaypoint(startWaypoint);
+        var endWaypoint = new Microsoft.Maps.Directions.Waypoint({ address: document.getElementById('txtEnd').value });
+        directionsManager.addWaypoint(endWaypoint);
         // Set the element in which the itinerary will be rendered
         directionsManager.setRenderOptions({ itineraryContainer: document.getElementById('directionsItinerary') });
         //alert('Calculating directions...');
         directionsManager.calculateDirections();
+        routeWaypoints = directionsManager.getAllWaypoints();
+        routeURL = "http://dev.virtualearth.net/REST/V1/Routes?";
+        for(i = 0; i < routeWaypoints.length; i++){
+        	if(i == 0){
+        		routeURL += "wp." + i + "=" + routeWaypoints[i].getLocation().latitude + "," + routeWaypoints[i].getLocation().longitude;
+        	}
+        	else{
+        		routeURL += "&wp." + i + "=" + routeWaypoints[i].getLocation().latitude + "," + routeWaypoints[i].getLocation().longitude;	
+        	}
+        }
+        routeURL += "&key=Ah8etcX-YlaQzIeeC6bMXfPVLABzN2fiQaXiVCVuwAXpmkVvVHLtw791AMZtz71z"
+        alert(routeURL);
       }
 
       function createDirections() {
