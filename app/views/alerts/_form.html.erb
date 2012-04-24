@@ -11,27 +11,25 @@
     </div>
   <% end %>
 
-  <div class="field">
+  <div class="field" style="visibility:hidden">
     <%= f.label :url %><br />
     <%= f.text_field :url %>
   </div>
-  <div class="field">
-    <%= f.label :start %><br />
-    <%= f.time_select :start %>
+  <div style="vertical-align:middle;padding-left: 250px; padding-right:250px;">
+    <center>
+    <div class="field" >
+      I might leave as early as:<br />
+      <%= f.time_select :start %>
+    </div>
+    <br />
+    <div class="field" >
+      Or as late as: <br />
+      <%= f.time_select :end %>
+    </div>
+  </center>
   </div>
-  <div class="field">
-    <%= f.label :end %><br />
-    <%= f.time_select :end %>
-  </div>
-  <div class="field">
-    <%= f.label :active %><br />
-    <%= f.check_box :active %>
-  </div>
-  <div class="field">
-    <%= f.label :user %><br />
-    <%= f.text_field :user %>
-  </div>
-  <div class="actions">
+
+  <!-- <div class="actions">
     <%= f.submit %>
-  </div>
+  </div> -->
 <% end %>

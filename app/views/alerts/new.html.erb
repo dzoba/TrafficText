@@ -17,6 +17,7 @@
           if (!directionsManager) 
           {
               directionsManager = new Microsoft.Maps.Directions.DirectionsManager(map);
+              Microsoft.Maps.Events.addHandler(directionsManager, 'directionsUpdated', generateURL);
               displayMessage = 'Directions Module loaded\n';
               displayMessage += 'Directions Manager loaded';
           }
@@ -40,7 +41,11 @@
         directionsManager.setRenderOptions({ itineraryContainer: document.getElementById('directionsItinerary') });
         //alert('Calculating directions...');
         directionsManager.calculateDirections();
-        routeWaypoints = directionsManager.getAllWaypoints();
+
+      }
+
+      function generateURL(e){
+      	routeWaypoints = directionsManager.getAllWaypoints();
         routeURL = "http://dev.virtualearth.net/REST/V1/Routes?";
         for(i = 0; i < routeWaypoints.length; i++){
         	if(i == 0){
@@ -51,7 +56,7 @@
         	}
         }
         routeURL += "&key=Ah8etcX-YlaQzIeeC6bMXfPVLABzN2fiQaXiVCVuwAXpmkVvVHLtw791AMZtz71z"
-        alert(routeURL);
+        document.getElementById('alert_url').value = routeURL;
       }
 
       function createDirections() {
@@ -82,20 +87,29 @@
 
 
 
-
-
-<div id='myMap' style="position:relative; width:650px; height:450px;"></div>
-      <div>
-         <input type="button" value="CreateDrivingRoute" onclick="createDirections();" />
+<div id="stepOne" style="margin-left:auto;margin-right:auto;width:900px;border:1px solid black; height: 515px; padding-left: 15px">
+	<h1> Step One: Specify Your Commute Route</h1	>
+	<div id='myMap' style="position:relative; width:650px; height:450px;float:left;"></div>
+      <div style="float:right; margin-right: 30px; margin-top: 30px;"> 
+        	Start: <input id="txtStart" type="text" value="Seattle"/> <br />
+        	End:   <input id="txtEnd" type="text" value="Portland"/> <br />
+        	<input type="button" value="Search" onclick="createDirections();" />
+      
+	      	
+			
+			<div id='directionsItinerary' style="visibility:hidden"> </div> 
+			<input type="button" value="Clear Map" onclick="clearDisplay();" /> <br />
+			<input type="button" value="Use This Route" onclick="generateURL();" />
       </div>
-            <input id="txtStart" type="text" value="Seattle"/>
-      <input id="txtEnd" type="text" value="Portland"/>
-      <div id='directionsItinerary'> </div> 
-       <input type="button" value="Clear Map" onclick="clearDisplay();" />
+</div>
 
+<div style="clear:both;">
 
-<h1>New alert</h1>
-
+<div id="stepTwo" style="margin-left:auto; margin-right:auto; width: 900px;border:1px solid black; height: 275px; padding-left: 15px; margin-top: 30px;">
+	<h1> Step Two: Specify when you commute </h1>
 <%= render 'form' %>
 
-<%= link_to 'Back', alerts_path %>
+</div>
+
+<div id="stepThree" style="margin-left:auto; margin-right:auto; width: 900px;border:1px solid black; height: 275px; padding-left: 15px; margin-top: 30px;">
+	<h1> Step Three: Create your account </h1>
