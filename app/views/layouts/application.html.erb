@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>TrafficText</title>
+  <title>RouteS.MS</title>
    <p class="notice"><%= notice %></p>
    <p class="alert"><%= alert %></p>
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
+  <%= yield :head %>
 </head>
-<body>
-
+<body onload="getMap();">
+RouteS.MS
 <%= yield %>
 
 </body>

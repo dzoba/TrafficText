@@ -1,0 +1,35 @@
+<%= form_for(@alert) do |f| %>
+  <% if @alert.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@alert.errors.count, "error") %> prohibited this alert from being saved:</h2>
+
+      <ul>
+      <% @alert.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field" style="visibility:hidden">
+    <%= f.label :url %><br />
+    <%= f.text_field :url %>
+  </div>
+  <div style="vertical-align:middle;padding-left: 250px; padding-right:250px;">
+    <center>
+    <div class="field" >
+      I might leave as early as:<br />
+      <%= f.time_select :start %>
+    </div>
+    <br />
+    <div class="field" >
+      Or as late as: <br />
+      <%= f.time_select :end %>
+    </div>
+  </center>
+  </div>
+
+  <!-- <div class="actions">
+    <%= f.submit %>
+  </div> -->
+<% end %>

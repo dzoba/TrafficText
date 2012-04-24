@@ -1,0 +1,115 @@
+<% content_for :head do %>
+      <script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0"></script>
+      <script type="text/javascript">
+      var map = null;
+      var directionsManager;
+      var directionsErrorEventObj;
+      var directionsUpdatedEventObj; 
+       
+      function getMap()
+      {
+          map = new Microsoft.Maps.Map(document.getElementById('myMap'), {credentials: 'Ah8etcX-YlaQzIeeC6bMXfPVLABzN2fiQaXiVCVuwAXpmkVvVHLtw791AMZtz71z', width: 650, height: 450, center: new Microsoft.Maps.Location(38.685509760012, -96.50390625), zoom: 4, mapTypeId: Microsoft.Maps.MapTypeId.road});
+      }
+      
+      function createDirectionsManager()
+      {
+          var displayMessage;
+          if (!directionsManager) 
+          {
+              directionsManager = new Microsoft.Maps.Directions.DirectionsManager(map);
+              Microsoft.Maps.Events.addHandler(directionsManager, 'directionsUpdated', generateURL);
+              displayMessage = 'Directions Module loaded\n';
+              displayMessage += 'Directions Manager loaded';
+          }
+          //alert(displayMessage);
+          directionsManager.resetDirections();
+          directionsErrorEventObj = Microsoft.Maps.Events.addHandler(directionsManager, 'directionsError', function(arg) { alert(arg.message) });
+          directionsUpdatedEventObj = Microsoft.Maps.Events.addHandler(directionsManager, 'directionsUpdated', function() { /*alert('Directions updated')*/ });
+      }
+      
+      function createDrivingRoute()
+      {
+        if (!directionsManager) { createDirectionsManager(); }
+        directionsManager.resetDirections();
+        // Set Route Mode to driving 
+        directionsManager.setRequestOptions({ routeMode: Microsoft.Maps.Directions.RouteMode.driving });
+        var startWaypoint = new Microsoft.Maps.Directions.Waypoint({ address: document.getElementById('txtStart').value });
+        directionsManager.addWaypoint(startWaypoint);
+        var endWaypoint = new Microsoft.Maps.Directions.Waypoint({ address: document.getElementById('txtEnd').value });
+        directionsManager.addWaypoint(endWaypoint);
+        // Set the element in which the itinerary will be rendered
+        directionsManager.setRenderOptions({ itineraryContainer: document.getElementById('directionsItinerary') });
+        //alert('Calculating directions...');
+        directionsManager.calculateDirections();
+
+      }
+
+      function generateURL(e){
+      	routeWaypoints = directionsManager.getAllWaypoints();
+        routeURL = "http://dev.virtualearth.net/REST/V1/Routes?";
+        for(i = 0; i < routeWaypoints.length; i++){
+        	if(i == 0){
+        		routeURL += "wp." + i + "=" + routeWaypoints[i].getLocation().latitude + "," + routeWaypoints[i].getLocation().longitude;
+        	}
+        	else{
+        		routeURL += "&wp." + i + "=" + routeWaypoints[i].getLocation().latitude + "," + routeWaypoints[i].getLocation().longitude;	
+        	}
+        }
+        routeURL += "&key=Ah8etcX-YlaQzIeeC6bMXfPVLABzN2fiQaXiVCVuwAXpmkVvVHLtw791AMZtz71z"
+        document.getElementById('alert_url').value = routeURL;
+      }
+
+      function createDirections() {
+        if (!directionsManager)
+        {
+          Microsoft.Maps.loadModule('Microsoft.Maps.Directions', { callback: createDrivingRoute });
+        }
+        else
+        {
+          createDrivingRoute();
+        }
+       }
+
+      function clearDisplay()
+      {
+        if (!directionsManager) { createDirectionsManager(); }
+        directionsManager.clearDisplay();
+        //alert('Directions cleared (map/itinerary cleared, Waypoints preserved, request and render options preserved)');
+      }
+
+
+      </script>
+
+<% end %>
+
+
+
+
+
+
+<div id="stepOne" style="margin-left:auto;margin-right:auto;width:900px;border:1px solid black; height: 515px; padding-left: 15px">
+	<h1> Step One: Specify Your Commute Route</h1	>
+	<div id='myMap' style="position:relative; width:650px; height:450px;float:left;"></div>
+      <div style="float:right; margin-right: 30px; margin-top: 30px;"> 
+        	Start: <input id="txtStart" type="text" value="Seattle"/> <br />
+        	End:   <input id="txtEnd" type="text" value="Portland"/> <br />
+        	<input type="button" value="Search" onclick="createDirections();" />
+      
+	      	
+			
+			<div id='directionsItinerary' style="visibility:hidden"> </div> 
+			<input type="button" value="Clear Map" onclick="clearDisplay();" /> <br />
+			<input type="button" value="Use This Route" onclick="generateURL();" />
+      </div>
+</div>
+
+<div style="clear:both;">
+
+<div id="stepTwo" style="margin-left:auto; margin-right:auto; width: 900px;border:1px solid black; height: 275px; padding-left: 15px; margin-top: 30px;">
+	<h1> Step Two: Specify when you commute </h1>
+<%= render 'form' %>
+
+</div>
+
+<div id="stepThree" style="margin-left:auto; margin-right:auto; width: 900px;border:1px solid black; height: 275px; padding-left: 15px; margin-top: 30px;">
+	<h1> Step Three: Create your account </h1>
