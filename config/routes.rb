@@ -1,8 +1,10 @@
 TrafficText::Application.routes.draw do
 
+  resources :alerts
+
   devise_for :users
 
-  root :to => "home#index"
+  root :to => "alerts#new"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
