@@ -37,7 +37,7 @@
         var tacomaWaypoint = new Microsoft.Maps.Directions.Waypoint({ address: document.getElementById('txtEnd').value });
         directionsManager.addWaypoint(tacomaWaypoint);
         // Set the element in which the itinerary will be rendered
-        directionsManager.setRenderOptions({ itineraryContainer: document.getElementById('directionsItinerary') });
+        //directionsManager.setRenderOptions({ itineraryContainer: document.getElementById('directionsItinerary') });
         //alert('Calculating directions...');
         directionsManager.calculateDirections();
       }

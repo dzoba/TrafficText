@@ -1,0 +1,14 @@
+<div id="user_signup_box">
+  <%= form_for("user", :url => user_registration_path, :html => {:id => "sign_up"}, :remote => true, :format => :json) do |f| %>
+ <div><%= f.label :email %><br />
+  <%= f.email_field :email %></div>
+
+  <div><%= f.label :password %><br />
+  <%= f.password_field :password %></div>
+
+  <div><%= f.label :password_confirmation %><br />
+  <%= f.password_field :password_confirmation %></div>
+
+  <div><%= f.submit "Sign up" %></div>
+  <% end %>
+</div>

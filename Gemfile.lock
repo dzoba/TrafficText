@@ -105,6 +105,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bcrypt-ruby
   devise
   jquery-rails
   rails (= 3.2.3)
