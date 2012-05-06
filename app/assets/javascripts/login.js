@@ -4,6 +4,7 @@ $(document).ready(function() {
     console.log(data);
     if(data.success) {
       $('#user_login_box').html(data.content);
+      document.forms["new_alert"].submit();
     } else {
       $('#user_login_box').prepend(data.errors.join('<br />'));
     }

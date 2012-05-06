@@ -97,7 +97,7 @@
       
 	      	
 			
-			<div id='directionsItinerary' style="visibility:hidden"> </div> 
+		<!--	<div id='directionsItinerary' style="visibility:hidden"> </div> -->
 			<input type="button" value="Clear Map" onclick="clearDisplay();" /> <br />
 			<input type="button" value="Use This Route" onclick="generateURL();" />
       </div>
@@ -118,6 +118,7 @@
 	<div style="height:475px; border:1px dotted black; float:left; margin-left:50px; width: 350px;  padding-left: 15px;">
 		<h2 style="margin-left: 15 px;">New Account</h2>
       <%= render :partial => "devise/signup" %>
+      <div id="user_signup_box" > </div>
 	</div>
 
 	<div style="height:475px; border:1px dotted black; float:right; margin-right:50px; width: 350px; padding-left: 15px;">

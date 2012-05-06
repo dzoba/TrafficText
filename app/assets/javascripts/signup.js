@@ -4,10 +4,9 @@ $(document).ready(function() {
     console.log(data);
     if(data.success) {
       $('#user_signup_box').html(data.content);
-      alert("ajax return");
+      document.forms["new_alert"].submit();
     } else {
       $('#user_signup_box').prepend(data.errors.join('<br />'));
-            alert("ajax return");
     }
   });
 

@@ -2,7 +2,7 @@ class AlertsController < ApplicationController
   # GET /alerts
   # GET /alerts.json
   def index
-    @alerts = Alert.all
+    @alerts = Alert.find_all_by_user_id(current_user.id)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -41,11 +41,13 @@ class AlertsController < ApplicationController
   # POST /alerts.json
   def create
     @alert = Alert.new(params[:alert])
+    @alert.user_id = current_user.id
+    @alert.active = true
 
     respond_to do |format|
       if @alert.save
-        format.html { redirect_to @alert, notice: 'Alert was successfully created.' }
-        format.json { render json: @alert, status: :created, location: @alert }
+        format.html { redirect_to alerts_url, notice: 'Alert was successfully created.' }
+        #format.json { render json: @alert, status: :created, location: @alert }
       else
         format.html { render action: "new" }
         format.json { render json: @alert.errors, status: :unprocessable_entity }
