@@ -87,8 +87,8 @@
 
 
 
-<div id="stepOne" style="margin-left:auto;margin-right:auto;width:900px;border:1px solid black; height: 515px; padding-left: 15px">
-	<h1> Step One: Specify Your Commute Route</h1	>
+<div id="stepOne" style="margin-left:auto;margin-right:auto;width:900px;border:1px solid black; height: 515px; padding-left: 15px; background-color:white;">
+	<h1> Step One: Specify your commute route</h1	>
 	<div id='myMap' style="position:relative; width:650px; height:450px;float:left;"></div>
       <div style="float:right; margin-right: 30px; margin-top: 30px;"> 
         	Start: <input id="txtStart" type="text" value="Seattle"/> <br />
@@ -97,7 +97,7 @@
       
 	      	
 			
-			<div id='directionsItinerary' style="visibility:hidden"> </div> 
+		<!--	<div id='directionsItinerary' style="visibility:hidden"> </div> -->
 			<input type="button" value="Clear Map" onclick="clearDisplay();" /> <br />
 			<input type="button" value="Use This Route" onclick="generateURL();" />
       </div>
@@ -105,11 +105,31 @@
 
 <div style="clear:both;">
 
-<div id="stepTwo" style="margin-left:auto; margin-right:auto; width: 900px;border:1px solid black; height: 275px; padding-left: 15px; margin-top: 30px;">
+<div id="stepTwo" style="margin-left:auto; margin-right:auto; width: 900px;border:1px solid black; height: 275px; padding-left: 15px; margin-top: 30px;background-color:white;">
 	<h1> Step Two: Specify when you commute </h1>
 <%= render 'form' %>
 
 </div>
 
-<div id="stepThree" style="margin-left:auto; margin-right:auto; width: 900px;border:1px solid black; height: 275px; padding-left: 15px; margin-top: 30px;">
-	<h1> Step Three: Create your account </h1>
+<div id="stepThree" style="margin-left:auto; margin-right:auto; width: 900px;border:1px solid black; height: 600px; padding-left: 15px; margin-top: 30px;background-color:white;">
+
+  
+	<h1 style="margin-bottom: 40px;"> Step Three: Account </h1>
+	<div style="height:475px; border:1px dotted black; float:left; margin-left:50px; width: 350px;  padding-left: 15px;">
+		<h2 style="margin-left: 15 px;">New Account</h2>
+      <%= render :partial => "devise/signup" %>
+      <div id="user_signup_box" > </div>
+	</div>
+
+	<div style="height:475px; border:1px dotted black; float:right; margin-right:50px; width: 350px; padding-left: 15px;">
+		<h2 style="margin-left: 15 px;">Existing Account</h2>
+      <%= render :partial => "devise/manager" %>
+	</div>
+</div>
+
+
+
+
+
+
+

@@ -2,7 +2,7 @@ TrafficText::Application.routes.draw do
 
   resources :alerts
 
-  devise_for :users
+  devise_for :users, :controllers => {:sessions => 'sessions', :registrations => "registrations"}
 
   root :to => "alerts#new"
 

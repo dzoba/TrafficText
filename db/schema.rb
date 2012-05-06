@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120422005341) do
+ActiveRecord::Schema.define(:version => 20120503112224) do
 
   create_table "alerts", :force => true do |t|
     t.string   "url"
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(:version => 20120422005341) do
     t.integer  "user"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.integer  "user_id"
   end
 
   create_table "users", :force => true do |t|
@@ -36,6 +37,8 @@ ActiveRecord::Schema.define(:version => 20120422005341) do
     t.string   "last_sign_in_ip"
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
+    t.integer  "phone_number"
+    t.boolean  "phone_number_verified"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
