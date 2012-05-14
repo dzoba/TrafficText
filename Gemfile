@@ -9,6 +9,8 @@ gem 'sqlite3'
 
 gem 'pg'
 
+gem 'mysql'
+
 gem 'twilio-ruby'
 
 gem 'devise'
