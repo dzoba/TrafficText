@@ -23,7 +23,7 @@ class User < ActiveRecord::Base
     
     active_alerts.each do |active_alert|
 	if(!active_alert.sent)
-		jsonResonse = open(active_alert.url).read
+		jsonResponse = open(active_alert.url).read
 		open('checkURLRecord.out', 'a') { |f|
   			f.puts "Checked " + active_alert.id.to_s + " at " + Time.now.to_s
 		}
