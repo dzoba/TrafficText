@@ -115,6 +115,9 @@
 
   
 	<h1 style="margin-bottom: 40px;"> Step Three: Account </h1>
+  <% if user_signed_in? %>
+    <input type="button" value="Create Route!" onClick="document.forms["new_alert"].submit();">
+  <% else %>
 	<div style="height:475px; border:1px dotted black; float:left; margin-left:50px; width: 350px;  padding-left: 15px;">
 		<h2 style="margin-left: 15 px;">New Account</h2>
       <%= render :partial => "devise/signup" %>
@@ -125,6 +128,7 @@
 		<h2 style="margin-left: 15 px;">Existing Account</h2>
       <%= render :partial => "devise/manager" %>
 	</div>
+  <% end %>
 </div>
 
 

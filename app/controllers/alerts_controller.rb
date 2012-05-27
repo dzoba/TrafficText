@@ -1,12 +1,17 @@
 class AlertsController < ApplicationController
   # GET /alerts
   # GET /alerts.json
-  def index
-    @alerts = Alert.find_all_by_user_id(current_user.id)
 
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @alerts }
+  def index
+    if user_signed_in?
+      @alerts = Alert.find_all_by_user_id(current_user.id)
+
+      respond_to do |format|
+        format.html # index.html.erb
+        format.json { render json: @alerts }
+      end
+    else
+      redirect_to root_path
     end
   end
 
